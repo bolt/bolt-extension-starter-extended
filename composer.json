@@ -1,5 +1,5 @@
 {
-    "name": "username/extensionname",
+    "name": "rossriley/bolt-extension-starter",
     "description": "A description about your extension should go here.",
     "type": "bolt-extension",
     "require": {
