@@ -7,12 +7,6 @@ use Bolt\BaseExtension;
 
 class Extension extends BaseExtension
 {
-    
-    public function __construct(Application $app)
-    {
-        parent::__construct($app);
-        
-    }
   
 
     public function initialize() {
