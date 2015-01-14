@@ -7,9 +7,8 @@ use Bolt\BaseExtension;
 
 class Extension extends BaseExtension
 {
-  
-
-    public function initialize() {
+    public function initialize()
+    {
         $this->addCss('assets/extension.css');
         $this->addJavascript('assets/start.js', true);
     }
@@ -18,11 +17,4 @@ class Extension extends BaseExtension
     {
         return "extensionname";
     }
-
 }
-
-
-
-
-
-
