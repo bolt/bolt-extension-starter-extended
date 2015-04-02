@@ -1,5 +1,8 @@
 <?php
 
-namespace Bolt\Extension\Yourname\Extensionname;
+namespace Bolt\Extension\YourName\ExtensionName;
 
-$app['extensions']->register(new Extension($app));
+if (isset($app)) {
+    $app['extensions']->register(new Extension($app));
+}
+
