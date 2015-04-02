@@ -1,6 +1,6 @@
 <?php
 
-namespace Bolt\Extension\Yourname\Extensionname;
+namespace Bolt\Extension\YourName\ExtensionName;
 
 use Bolt\Application;
 use Bolt\BaseExtension;
@@ -15,6 +15,6 @@ class Extension extends BaseExtension
 
     public function getName()
     {
-        return "extensionname";
+        return "ExtensionName";
     }
 }
