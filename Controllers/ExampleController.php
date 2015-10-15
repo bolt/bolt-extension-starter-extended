@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: phillipp
- * Date: 15.10.15
- * Time: 23:27
- */
 
 namespace Bolt\Extension\YourName\ExtensionName\Controllers;
-
 
 use Bolt\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
