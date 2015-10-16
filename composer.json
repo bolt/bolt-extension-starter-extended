@@ -1,5 +1,5 @@
 {
-    "name": "bolt/bolt-extension-starter",
+    "name": "bolt/bolt-extension-starter-extended",
     "description": "A description about your extension should go here.",
     "type": "bolt-extension",
     "keywords" : [ "foo", "bar" ],
