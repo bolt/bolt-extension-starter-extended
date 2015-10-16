@@ -4,14 +4,15 @@ namespace Bolt\Extension\YourName\ExtensionName;
 
 use Bolt\Application;
 use Bolt\BaseExtension;
-use Bolt\Extension\YourName\ExtensionName\Controllers\ExampleController;
+use Bolt\Extension\YourName\ExtensionName\Controller\ExampleController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Extension extends BaseExtension
 {
     public function initialize()
     {
-        $this->addCss('assets/extension.css');
-        $this->addJavascript('assets/start.js', true);
+        $this->app->before(array($this, 'before'));
 
         /*
          * Routes:
@@ -20,20 +21,15 @@ class Extension extends BaseExtension
          * then we switch to an extra Controller class for the routes.
          * */
 
-        // register route for all GET requests on '/example/url' that will be handled in this class ($this) in the 'routeExampleUrl' function
-        $this->app->get("/example/url", array($this, 'routeExampleUrl'))->bind('example-url');
+        // register route for all GET requests on '/example/url' that will be handled in this class ($this) in the 'routeExampleUrl' function.
+        $this->app
+            ->get("/example/url", array($this, 'routeExampleUrl'))
+            ->bind('example-url');
 
-        // new instance of our example Controller
-        $exampleController = new ExampleController($this->app, $this->config);
+        // Mount the ExampleController class to all routes that match '/example/url/*'
+        // To see specific bindings between route and controller method see 'connect()' function in the ExampleController class.
+        $this->app->mount('/example/url', new ExampleController($this->app, $this->config));
 
-        // register route for all GET requests on '/example/url/in/controller' that will be handled in the ExampleController class in the 'exampleUrl' function
-        $this->app->get("/example/url/in/controller", array($exampleController, 'exampleUrl'))->bind('example-url-controller');
-
-        // {we register a new route stuff from below} ... and return a JSON string as response.
-        $this->app->get("/example/url/json", array($exampleController, 'exampleUrlJson'))->bind('example-url-json');
-
-        // {we register a new route stuff from below} ... with an url parameter whose value will be returned as a JSON response.
-        $this->app->get("/example/url/parameter/{id}", array($exampleController, 'exampleUrlWithParameter'))->bind('example-url-parameter');
     }
 
     public function getName()
@@ -42,10 +38,27 @@ class Extension extends BaseExtension
     }
 
     /**
-     * Handles GET requests on /example/url
+     * Before middleware function.
      */
-    public function routeExampleUrl()
+    public function before()
     {
-        // do something
+        // add CSS and Javascript files to all requests
+        $this->addCss('assets/extension.css');
+        $this->addJavascript('assets/start.js', true);
+    }
+
+    /**
+     * Handles GET requests on /example/url
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function routeExampleUrl(Request $request)
+    {
+        $response = new Response('Hello, Bolt!', Response::HTTP_OK);
+
+        return $response;
     }
 }
+
