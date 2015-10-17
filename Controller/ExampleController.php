@@ -35,8 +35,6 @@ class ExampleController implements ControllerProviderInterface
     {
         $this->app = $app;
         $this->config = $config;
-
-        $this->app->before(array($this, 'before'));
     }
 
     /**
@@ -118,16 +116,6 @@ class ExampleController implements ControllerProviderInterface
             ->bind('example-url-parameter');
 
         return $ctr;
-    }
-
-    /**
-     * Before middleware function.
-     */
-    public function before()
-    {
-        // add CSS and Javascript files to all requests served by this controller
-        $this->addCss('assets/extension.css');
-        $this->addJavascript('assets/start.js', true);
     }
 }
 
