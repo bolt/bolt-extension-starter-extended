@@ -38,6 +38,35 @@ class ExampleController implements ControllerProviderInterface
     }
 
     /**
+     * Specify which method handles which route.
+     *
+     * Base route/path is '/example/url' (see Extension.php)
+     *
+     * @param \Silex\Application $app An Application instance
+     *
+     * @return ControllerCollection A ControllerCollection instance
+     */
+    public function connect(\Silex\Application $app)
+    {
+        /** @var $ctr \Silex\ControllerCollection */
+        $ctr = $app['controllers_factory'];
+
+        // /example/url/in/controller
+        $ctr->get('/in/controller', array($this, 'exampleUrl'))
+            ->bind('example-url-controller');
+
+        // /example/url/json
+        $ctr->get('/json', array($this, 'exampleUrlJson'))
+            ->bind('example-url-json');
+
+        // /example/url/parameter/{id}
+        $ctr->get('/parameter/{id}', array($this, 'exampleUrlWithParameter'))
+            ->bind('example-url-parameter');
+
+        return $ctr;
+    }
+
+    /**
      * Handles GET requests on /example/url/in/controller
      *
      * @param Request $request
@@ -87,35 +116,6 @@ class ExampleController implements ControllerProviderInterface
         ]);
 
         return $jsonResponse;
-    }
-
-    /**
-     * Specify which method handles which route.
-     *
-     * Base route/path is '/example/url' (see Extension.php)
-     *
-     * @param \Silex\Application $app An Application instance
-     *
-     * @return ControllerCollection A ControllerCollection instance
-     */
-    public function connect(\Silex\Application $app)
-    {
-        /** @var $ctr \Silex\ControllerCollection */
-        $ctr = $app['controllers_factory'];
-
-        // /example/url/in/controller
-        $ctr->get('/in/controller', array($this, 'exampleUrl'))
-            ->bind('example-url-controller');
-
-        // /example/url/json
-        $ctr->get('/json', array($this, 'exampleUrlJson'))
-            ->bind('example-url-json');
-
-        // /example/url/parameter/{id}
-        $ctr->get('/parameter/{id}', array($this, 'exampleUrlWithParameter'))
-            ->bind('example-url-parameter');
-
-        return $ctr;
     }
 }
 
