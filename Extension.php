@@ -15,6 +15,18 @@ class Extension extends BaseExtension
         $this->app->before(array($this, 'before'));
 
         /*
+         * Own Twig functions:
+         * You can define methods inside this class as Twig functions.
+         * How to use the following example in your template: {{ addFiveTo(7) }}
+         * It will display '12'.
+         * */
+
+        $this->addTwigFunction(
+            'addFiveTo', // Twig function name
+            'addFiveTo'  // Method in this class (scroll down buddy)
+        );
+
+        /*
          * Routes:
          * Here you can register new routes in your Bolt application.
          * The first route will be handles in this Extension class,
@@ -29,7 +41,6 @@ class Extension extends BaseExtension
         // Mount the ExampleController class to all routes that match '/example/url/*'
         // To see specific bindings between route and controller method see 'connect()' function in the ExampleController class.
         $this->app->mount('/example/url', new ExampleController($this->app, $this->config));
-
     }
 
     public function getName()
@@ -59,6 +70,18 @@ class Extension extends BaseExtension
         $response = new Response('Hello, Bolt!', Response::HTTP_OK);
 
         return $response;
+    }
+
+    /**
+     * Add 5 to the given number
+     *
+     * @param $number
+     *
+     * @return int
+     */
+    public function addFiveTo($number)
+    {
+        return intval($number) + 5;
     }
 }
 
