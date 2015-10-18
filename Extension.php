@@ -17,12 +17,12 @@ class Extension extends BaseExtension
         /*
          * Own Twig functions:
          * You can define methods inside this class as Twig functions.
-         * How to use the following example in your template: {{ addFiveTo(7) }}
+         * How to use the following example in your template: {{ add_five_to(7) }}
          * It will display '12'.
          * */
 
         $this->addTwigFunction(
-            'addFiveTo', // Twig function name
+            'add_five_to', // Twig function name
             'addFiveTo'  // Method in this class (scroll down buddy)
         );
 
