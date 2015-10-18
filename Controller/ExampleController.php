@@ -35,8 +35,35 @@ class ExampleController implements ControllerProviderInterface
     {
         $this->app = $app;
         $this->config = $config;
+    }
 
-        $this->app->before(array($this, 'before'));
+    /**
+     * Specify which method handles which route.
+     *
+     * Base route/path is '/example/url' (see Extension.php)
+     *
+     * @param \Silex\Application $app An Application instance
+     *
+     * @return ControllerCollection A ControllerCollection instance
+     */
+    public function connect(\Silex\Application $app)
+    {
+        /** @var $ctr \Silex\ControllerCollection */
+        $ctr = $app['controllers_factory'];
+
+        // /example/url/in/controller
+        $ctr->get('/in/controller', array($this, 'exampleUrl'))
+            ->bind('example-url-controller');
+
+        // /example/url/json
+        $ctr->get('/json', array($this, 'exampleUrlJson'))
+            ->bind('example-url-json');
+
+        // /example/url/parameter/{id}
+        $ctr->get('/parameter/{id}', array($this, 'exampleUrlWithParameter'))
+            ->bind('example-url-parameter');
+
+        return $ctr;
     }
 
     /**
@@ -89,45 +116,6 @@ class ExampleController implements ControllerProviderInterface
         ]);
 
         return $jsonResponse;
-    }
-
-    /**
-     * Specify which method handles which route.
-     *
-     * Base route/path is '/example/url' (see Extension.php)
-     *
-     * @param \Silex\Application $app An Application instance
-     *
-     * @return ControllerCollection A ControllerCollection instance
-     */
-    public function connect(\Silex\Application $app)
-    {
-        /** @var $ctr \Silex\ControllerCollection */
-        $ctr = $app['controllers_factory'];
-
-        // /example/url/in/controller
-        $ctr->get('/in/controller', array($this, 'exampleUrl'))
-            ->bind('example-url-controller');
-
-        // /example/url/json
-        $ctr->get('/json', array($this, 'exampleUrlJson'))
-            ->bind('example-url-json');
-
-        // /example/url/parameter/{id}
-        $ctr->get('/parameter/{id}', array($this, 'exampleUrlWithParameter'))
-            ->bind('example-url-parameter');
-
-        return $ctr;
-    }
-
-    /**
-     * Before middleware function.
-     */
-    public function before()
-    {
-        // add CSS and Javascript files to all requests served by this controller
-        $this->addCss('assets/extension.css');
-        $this->addJavascript('assets/start.js', true);
     }
 }
 
