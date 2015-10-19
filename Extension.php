@@ -29,7 +29,6 @@ class Extension extends BaseExtension
 
         // it's just a normal array
         $foo = $this->config['foo'];
-        //dump($foo);
 
 
 
