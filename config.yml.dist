@@ -1,0 +1,11 @@
+# This is the configuration file for your extension.
+# This file is written in the yaml format and will be copied as {extension-name}.{vendor-name}.yml into /app/config/extensions.
+# See Extension.php or https://docs.bolt.cm/extensions/essentials#using-your-own-configyml-file how to access it.
+
+foo: 1
+bar: 2.5
+baz: foo bar
+
+example:
+  foo: 3
+  bar: baz
