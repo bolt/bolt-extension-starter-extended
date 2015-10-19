@@ -87,6 +87,11 @@ class Extension extends BaseExtension
         $this->app->mount('/example/url', new ExampleController($this->app, $this->config));
     }
 
+    /**
+     * The extension name
+     *
+     * @return string
+     */
     public function getName()
     {
         return "ExtensionName";
