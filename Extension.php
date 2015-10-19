@@ -15,6 +15,47 @@ class Extension extends BaseExtension
         $this->app->before(array($this, 'before'));
 
         /*
+         * Extension config file:
+         * You extension can have its own config file where your users can set some options
+         * through the Bolt backend or any text editor.
+         * Look at the file named config.yml.dist which is your config boilerplate.
+         * You can edit it like you want so it fits your needs.
+         * Bolt will copy it as {extension-name}.{vendor-name}.yml into /app/config/extensions when it doesn’t already exist there.
+         * See also the section in the docs: https://docs.bolt.cm/extensions/essentials#using-your-own-configyml-file
+         * */
+
+        // dump the whole config on top of each page for debugging purpose
+        //dump($this->config);
+
+        // it's just a normal array
+        $foo = $this->config['foo'];
+        //dump($foo);
+
+
+
+
+
+        /*
+         * Global application config:
+         * You can also access the global application config.
+         * There is a useful getter on the configuration object to access the different configuration file.
+         * Struktur: get({file}/{key}/{subkey});
+         * Unclear? Check out the following examples.
+         * */
+
+        $theme = $this->app['config']->get('general/theme', 'default'); // File 'config.yml', Key 'theme'
+
+        $pagesContenttype = $this->app['config']->get('contenttypes/pages', 'default'); // File 'contenttypes.yml', Key 'pages'
+
+        $mainMenuFirstItem = $this->app['config']->get('menu/main/0', 'default'); // File 'menu.yml', Key 'main', SubKey 0
+
+        $roles = $this->app['config']->get('permissions/roles', 'default'); // File 'permissions.yml', Key 'roles'
+
+
+
+
+
+        /*
          * Own Twig functions:
          * You can define methods inside this class as Twig functions.
          * How to use the following example in your template: {{ add_five_to(7) }}
@@ -25,6 +66,10 @@ class Extension extends BaseExtension
             'add_five_to', // Twig function name
             'addFiveTo'  // Method in this class (scroll down buddy)
         );
+
+
+
+
 
         /*
          * Routes:
