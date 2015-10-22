@@ -33,7 +33,6 @@ class Extension extends BaseExtension
 
 
 
-
         /*
          * Global application config:
          * You can also access the global application config.
@@ -53,7 +52,6 @@ class Extension extends BaseExtension
 
 
 
-
         /*
          * Own Twig functions:
          * You can define methods inside this class as Twig functions.
@@ -65,7 +63,6 @@ class Extension extends BaseExtension
             'add_five_to', // Twig function name
             'addFiveTo'  // Method in this class (scroll down buddy)
         );
-
 
 
 
