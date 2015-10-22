@@ -14,7 +14,7 @@ class Extension extends BaseExtension
     {
         $this->app->before(array($this, 'before'));
 
-        // run execute only when in backend
+        // execute only when in backend
         if ($this->app['config']->getWhichEnd() == 'backend') {
             $this->app['htmlsnippets'] = true;
             $this->app['twig.loader.filesystem']->prependPath(__DIR__ . "/assets/twig"); //register folder as additional twig source
@@ -74,8 +74,8 @@ class Extension extends BaseExtension
 
 
         /*
-         * Own form fields:
-         * You are not limited to the form fields that are served by Bolt.
+         * Own Fieldtypes:
+         * You are not limited to the fieldtypes that are served by Bolt.
          * It's really easy to create your own.
          *
          * This example is just a simple textfield to show you
