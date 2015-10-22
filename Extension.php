@@ -14,6 +14,12 @@ class Extension extends BaseExtension
     {
         $this->app->before(array($this, 'before'));
 
+        // run execute only when in backend
+        if ($this->app['config']->getWhichEnd() == 'backend') {
+            $this->app['htmlsnippets'] = true;
+            $this->app['twig.loader.filesystem']->prependPath(__DIR__ . "/assets/twig"); //register folder as additional twig source
+        }
+
         /*
          * Extension config file:
          * You extension can have its own config file where your users can set some options
@@ -63,6 +69,23 @@ class Extension extends BaseExtension
             'add_five_to', // Twig function name
             'addFiveTo'  // Method in this class (scroll down buddy)
         );
+
+
+
+
+        /*
+         * Own form fields:
+         * You are not limited to the form fields that are served by Bolt.
+         * It's really easy to create your own.
+         *
+         * This example is just a simple textfield to show you
+         * how to store and receive data.
+         *
+         * See also the documentation page for more information and a more complex example.
+         * https://docs.bolt.cm/extensions/customfields
+         * */
+
+        $this->app['config']->getFields()->addField(new Field\ExampleField());
 
 
 
