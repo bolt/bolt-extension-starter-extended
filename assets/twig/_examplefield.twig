@@ -1,0 +1,27 @@
+{#=== Options ============================================================================#}
+
+{% set attr_opt = {
+    class:        field.class|default(''),
+    name_id:      key,
+    required:     field.required|default(false),
+    readonly:     field.readonly|default(false)
+}%}
+
+{#=== FIELDSET ============================================================================#}
+
+<fieldset class="text">
+    <div class="col-md-3">
+        {# Display the 'label' attribute from the entry in contenttypes.yml and use the database column name as default #}
+        <label class="control-label">{{ field.label|default(key|capitalize) }}:</label>
+    </div>
+    <div class="col-md-9">
+        {# We use the macro.attr function with the object we created above to add the following code to the input field:
+            class="form-control" name="examplefield" id="examplefield"
+         This is important, otherwise Bolt is not able to save the value to the database.
+
+         For the prefilled value on the edit form we try to get it out of the form
+         using the 'context' object together with the database column name. #}
+        <input {{ macro.attr(attr_opt) }} maxlength="255" type="text" value="{{context.content.values[key]}}">
+    </div>
+</fieldset>
+
