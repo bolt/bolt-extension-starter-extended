@@ -44,7 +44,7 @@ class ExampleField implements FieldInterface
      */
     public function getStorageOptions()
     {
-        return ['default' => ''];
+        return array('default' => '');
     }
 }
 
