@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  },
+  "dependencies": {
+    "laravel-elixir": "^3.4.1",
+    "laravel-elixir-stylus": "^1.0.1"
+  }
+}
