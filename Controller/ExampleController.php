@@ -102,7 +102,6 @@ class ExampleController implements ControllerProviderInterface
      * Handles GET requests on /example/url/parameter/{id} and return with json.
      *
      * @param Request $request
-     *
      * @param $id
      *
      * @return JsonResponse
@@ -118,4 +117,3 @@ class ExampleController implements ControllerProviderInterface
         return $jsonResponse;
     }
 }
-

@@ -47,4 +47,3 @@ class ExampleField implements FieldInterface
         return array('default' => '');
     }
 }
-

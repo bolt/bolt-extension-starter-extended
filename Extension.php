@@ -36,9 +36,6 @@ class Extension extends BaseExtension
         // it's just a normal array
         $foo = $this->config['foo'];
 
-
-
-
         /*
          * Global application config:
          * You can also access the global application config.
@@ -56,8 +53,6 @@ class Extension extends BaseExtension
         $roles = $this->app['config']->get('permissions/roles', 'default'); // File 'permissions.yml', Key 'roles'
 
 
-
-
         /*
          * Own Twig functions:
          * You can define methods inside this class as Twig functions.
@@ -69,9 +64,6 @@ class Extension extends BaseExtension
             'add_five_to', // Twig function name
             'addFiveTo'  // Method in this class (scroll down buddy)
         );
-
-
-
 
         /*
          * Own Fieldtypes:
@@ -86,9 +78,6 @@ class Extension extends BaseExtension
          * */
 
         $this->app['config']->getFields()->addField(new Field\ExampleField());
-
-
-
 
         /*
          * Routes:
@@ -153,4 +142,3 @@ class Extension extends BaseExtension
         return intval($number) + 5;
     }
 }
-
