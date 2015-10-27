@@ -6,6 +6,9 @@
     "require": {
         "bolt/bolt": ">=2.0.0,<3.0.0"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8"
+    },
     "license": "MIT",
     "authors": [
         {
@@ -20,11 +23,15 @@
             "init.php"
         ],
         "psr-4": {
-            "Bolt\\Extension\\YourName\\ExtensionName\\": "",
-            "Bolt\\Extension\\YourName\\ExtensionName\\Tests\\": "tests"
+            "Bolt\\Extension\\YourName\\ExtensionName\\": ""
         }
     },
-    
+    "autoload-dev" : {
+        "psr-4" : {
+            "Bolt\\Extension\\YourName\\ExtensionName\\Tests\\": "tests",
+            "Bolt\\Tests\\" : "vendor/bolt/bolt/tests/phpunit/unit/"
+        }
+    },
     "extra": {
         "bolt-assets": "assets"
     }
