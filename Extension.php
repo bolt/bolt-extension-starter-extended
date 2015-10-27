@@ -17,7 +17,7 @@ class Extension extends BaseExtension
         // execute only when in backend
         if ($this->app['config']->getWhichEnd() === 'backend') {
             $this->app['htmlsnippets'] = true;
-            $this->app['twig.loader.filesystem']->addPath(__DIR__ . "/assets/twig"); //register folder as additional twig source
+            $this->app['twig.loader.filesystem']->addPath(__DIR__ . '/twig'); //register folder as additional twig source
         }
 
         /*
