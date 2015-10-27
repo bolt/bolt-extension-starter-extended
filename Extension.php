@@ -10,6 +10,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Extension extends BaseExtension
 {
+    /**
+     * The extension name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return 'ExtensionName';
+    }
+
     public function initialize()
     {
         $this->app->before(array($this, 'before'));
@@ -85,22 +95,12 @@ class Extension extends BaseExtension
 
         // register route for all GET requests on '/example/url' that will be handled in this class ($this) in the 'routeExampleUrl' function.
         $this->app
-            ->get("/example/url", array($this, 'routeExampleUrl'))
+            ->get('/example/url', array($this, 'routeExampleUrl'))
             ->bind('example-url');
 
         // Mount the ExampleController class to all routes that match '/example/url/*'
         // To see specific bindings between route and controller method see 'connect()' function in the ExampleController class.
         $this->app->mount('/example/url', new ExampleController($this->app, $this->config));
-    }
-
-    /**
-     * The extension name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return "ExtensionName";
     }
 
     /**
@@ -119,9 +119,11 @@ class Extension extends BaseExtension
 
         // In Bolt 2.3+ getWhichEnd() has been deprecated and you should use
         // Zones insted
-//      if (Zone::isFrontend($request)) {
-//      }
 //      if (Zone::isBackend($request)) {
+//          $this->addCss('assets/extension.css');
+//          $this->addJavascript('assets/start.js', true);
+//      }
+//      if (Zone::isFrontend($request)) {
 //      }
     }
 
