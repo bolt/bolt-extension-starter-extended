@@ -14,11 +14,8 @@ class Extension extends BaseExtension
     {
         $this->app->before(array($this, 'before'));
 
-        // execute only when in backend
-        if ($this->app['config']->getWhichEnd() === 'backend') {
-            $this->app['htmlsnippets'] = true;
-            $this->app['twig.loader.filesystem']->addPath(__DIR__ . '/twig'); //register folder as additional twig source
-        }
+        //register folder as additional twig source
+        $this->app['twig.loader.filesystem']->addPath(__DIR__ . '/twig');
 
         /*
          * Extension config file:
@@ -109,11 +106,23 @@ class Extension extends BaseExtension
     /**
      * Before middleware function.
      */
-    public function before()
+    public function before(Request $request)
     {
-        // add CSS and Javascript files to all requests
-        $this->addCss('assets/extension.css');
-        $this->addJavascript('assets/start.js', true);
+        // execute only when in backend
+        if ($this->app['config']->getWhichEnd() === 'backend') {
+            $this->app['htmlsnippets'] = true;
+
+            // add CSS and Javascript files to all requests
+            $this->addCss('assets/extension.css');
+            $this->addJavascript('assets/start.js', true);
+        }
+
+        // In Bolt 2.3+ getWhichEnd() has been deprecated and you should use
+        // Zones insted
+//      if (Zone::isFrontend($request)) {
+//      }
+//      if (Zone::isBackend($request)) {
+//      }
     }
 
     /**
