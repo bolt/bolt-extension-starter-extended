@@ -23,7 +23,10 @@
             "init.php"
         ],
         "psr-4": {
-            "Bolt\\Extension\\YourName\\ExtensionName\\": ""
+            "Bolt\\Extension\\YourName\\ExtensionName\\": [
+                "",
+                "src"
+            ]
         }
     },
     "autoload-dev" : {
