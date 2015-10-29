@@ -59,7 +59,6 @@ class Extension extends BaseExtension
 
         $roles = $this->app['config']->get('permissions/roles', 'default'); // File 'permissions.yml', Key 'roles'
 
-
         /*
          * Own Twig functions:
          * You can define methods inside this class as Twig functions.
