@@ -4,6 +4,8 @@ namespace Bolt\Extension\YourName\ExtensionName;
 
 use Bolt\Application;
 use Bolt\BaseExtension;
+use Bolt\Events\StorageEvent;
+use Bolt\Events\StorageEvents;
 use Bolt\Extension\YourName\ExtensionName\Controller\ExampleController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -100,6 +102,18 @@ class Extension extends BaseExtension
         // Mount the ExampleController class to all routes that match '/example/url/*'
         // To see specific bindings between route and controller method see 'connect()' function in the ExampleController class.
         $this->app->mount('/example/url', new ExampleController($this->app, $this->config));
+
+        /*
+         * Event Listener:
+         * Did you know that Bolt fires events based on backend actions?
+         * Now you know! :)
+         * Let's register listeners for all 4 storage events.
+         * The first listener will be an inline function, the three other ones will be in a separate class.
+         * See also the documentation page:
+         * https://docs.bolt.cm/extensions/essentials#adding-storage-events
+         * */
+
+        $this->app['dispatcher']->addListener(StorageEvents::PRE_SAVE, array($this, 'onPreSave'));
     }
 
     /**
@@ -138,6 +152,20 @@ class Extension extends BaseExtension
         $response = new Response('Hello, Bolt!', Response::HTTP_OK);
 
         return $response;
+    }
+
+    /**
+     * Handles PRE_SAVE storage event
+     *
+     * @param StorageEvent $event
+     */
+    public function onPreSave(StorageEvent $event)
+    {
+        $contenttype = $event->getContentType();
+        $record = $event->getContent();
+
+        // Do whatever you want with this data
+        // See page in the documentation for a logging example
     }
 
     /**
