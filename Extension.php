@@ -117,7 +117,9 @@ class Extension extends BaseExtension
     }
 
     /**
-     * Before middleware function.
+     * Before middleware function
+     *
+     * @param Request $request
      */
     public function before(Request $request)
     {
@@ -125,7 +127,7 @@ class Extension extends BaseExtension
         if ($this->app['config']->getWhichEnd() === 'backend') {
             $this->app['htmlsnippets'] = true;
 
-            // add CSS and Javascript files to all requests
+            // add CSS and Javascript files to all requests in the backend
             $this->addCss('assets/extension.css');
             $this->addJavascript('assets/start.js', true);
         }
