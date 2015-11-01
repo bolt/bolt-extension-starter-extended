@@ -7,6 +7,7 @@ use Bolt\BaseExtension;
 use Bolt\Events\StorageEvent;
 use Bolt\Events\StorageEvents;
 use Bolt\Extension\YourName\ExtensionName\Controller\ExampleController;
+use Bolt\Extension\YourName\Listener\StorageEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -114,6 +115,11 @@ class Extension extends BaseExtension
          * */
 
         $this->app['dispatcher']->addListener(StorageEvents::PRE_SAVE, array($this, 'onPreSave'));
+
+        $storageEventListener = new StorageEventListener($this->app, $this->config);
+        $this->app['dispatcher']->addListener(StorageEvents::POST_SAVE, array($storageEventListener, 'onPostSave'));
+        $this->app['dispatcher']->addListener(StorageEvents::PRE_DELETE, array($storageEventListener, 'onPreDelete'));
+        $this->app['dispatcher']->addListener(StorageEvents::POST_DELETE, array($storageEventListener, 'onPostDelete'));
     }
 
     /**
