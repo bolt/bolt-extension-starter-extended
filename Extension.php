@@ -169,8 +169,9 @@ class Extension extends BaseExtension
      */
     public function onPreSave(StorageEvent $event)
     {
-        $contenttype = $event->getContentType();
-        $record = $event->getContent();
+        $contenttype = $event->getContentType(); // record contenttype
+        $record = $event->getContent(); // record itself
+        $created = $event->isCreate(); // if record was created, updated or deleted, for more information see the page in the documentation
 
         // Do whatever you want with this data
         // See page in the documentation for a logging example
