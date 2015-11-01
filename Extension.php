@@ -7,7 +7,7 @@ use Bolt\BaseExtension;
 use Bolt\Events\StorageEvent;
 use Bolt\Events\StorageEvents;
 use Bolt\Extension\YourName\ExtensionName\Controller\ExampleController;
-use Bolt\Extension\YourName\Listener\StorageEventListener;
+use Bolt\Extension\YourName\ExtensionName\Listener\StorageEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

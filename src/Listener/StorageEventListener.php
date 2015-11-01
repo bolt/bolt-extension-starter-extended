@@ -1,6 +1,6 @@
 <?php
 
-namespace Bolt\Extension\YourName\Listener;
+namespace Bolt\Extension\YourName\ExtensionName\Listener;
 
 use Bolt\Application;
 use Bolt\Events\StorageEvent;
