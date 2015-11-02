@@ -4,7 +4,10 @@ namespace Bolt\Extension\YourName\ExtensionName;
 
 use Bolt\Application;
 use Bolt\BaseExtension;
+use Bolt\Events\StorageEvent;
+use Bolt\Events\StorageEvents;
 use Bolt\Extension\YourName\ExtensionName\Controller\ExampleController;
+use Bolt\Extension\YourName\ExtensionName\Listener\StorageEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -59,7 +62,6 @@ class Extension extends BaseExtension
 
         $roles = $this->app['config']->get('permissions/roles', 'default'); // File 'permissions.yml', Key 'roles'
 
-
         /*
          * Own Twig functions:
          * You can define methods inside this class as Twig functions.
@@ -101,10 +103,29 @@ class Extension extends BaseExtension
         // Mount the ExampleController class to all routes that match '/example/url/*'
         // To see specific bindings between route and controller method see 'connect()' function in the ExampleController class.
         $this->app->mount('/example/url', new ExampleController($this->app, $this->config));
+
+        /*
+         * Event Listener:
+         * Did you know that Bolt fires events based on backend actions?
+         * Now you know! :)
+         * Let's register listeners for all 4 storage events.
+         * The first listener will be an inline function, the three other ones will be in a separate class.
+         * See also the documentation page:
+         * https://docs.bolt.cm/extensions/essentials#adding-storage-events
+         * */
+
+        $this->app['dispatcher']->addListener(StorageEvents::PRE_SAVE, array($this, 'onPreSave'));
+
+        $storageEventListener = new StorageEventListener($this->app, $this->config);
+        $this->app['dispatcher']->addListener(StorageEvents::POST_SAVE, array($storageEventListener, 'onPostSave'));
+        $this->app['dispatcher']->addListener(StorageEvents::PRE_DELETE, array($storageEventListener, 'onPreDelete'));
+        $this->app['dispatcher']->addListener(StorageEvents::POST_DELETE, array($storageEventListener, 'onPostDelete'));
     }
 
     /**
-     * Before middleware function.
+     * Before middleware function
+     *
+     * @param Request $request
      */
     public function before(Request $request)
     {
@@ -112,7 +133,7 @@ class Extension extends BaseExtension
         if ($this->app['config']->getWhichEnd() === 'backend') {
             $this->app['htmlsnippets'] = true;
 
-            // add CSS and Javascript files to all requests
+            // add CSS and Javascript files to all requests in the backend
             $this->addCss('assets/extension.css');
             $this->addJavascript('assets/start.js', true);
         }
@@ -139,6 +160,21 @@ class Extension extends BaseExtension
         $response = new Response('Hello, Bolt!', Response::HTTP_OK);
 
         return $response;
+    }
+
+    /**
+     * Handles PRE_SAVE storage event
+     *
+     * @param StorageEvent $event
+     */
+    public function onPreSave(StorageEvent $event)
+    {
+        $contenttype = $event->getContentType(); // record contenttype
+        $record = $event->getContent(); // record itself
+        $created = $event->isCreate(); // if record was created, updated or deleted, for more information see the page in the documentation
+
+        // Do whatever you want with this data
+        // See page in the documentation for a logging example
     }
 
     /**
