@@ -63,6 +63,10 @@ class ExampleController implements ControllerProviderInterface
         $ctr->get('/parameter/{id}', array($this, 'exampleUrlWithParameter'))
             ->bind('example-url-parameter');
 
+        // /example/url/get-parameter
+        $ctr->get('/get-parameter', array($this, 'exampleUrlGetParameter'))
+            ->bind('example-url-parameter-get');
+
         return $ctr;
     }
 
@@ -112,6 +116,27 @@ class ExampleController implements ControllerProviderInterface
 
         $jsonResponse->setData([
             'id' => $id
+        ]);
+
+        return $jsonResponse;
+    }
+
+    /**
+     * Handles GET requests on /example/url/get-parameter and return with some data with json.
+     * Example: http://localhost/example/url/get-parameter?foo=bar&baz=foo&id=7
+     * Works in the same way with POST requests
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function exampleUrlGetParameter(Request $request)
+    {
+        $jsonResponse = new JsonResponse();
+
+        $jsonResponse->setData([
+            'all' => $request->query->all(), // all GET parameter as key value array
+            'id' => $request->get('id') // only 'id' GET parameter
         ]);
 
         return $jsonResponse;
