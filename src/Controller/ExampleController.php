@@ -53,7 +53,7 @@ class ExampleController implements ControllerProviderInterface
 
         // /example/url/in/controller
         $ctr->get('/in/controller', array($this, 'exampleUrl'))
-            ->bind('example-url-controller');
+            ->bind('example-url-controller'); // route name, must be unique(!)
 
         // /example/url/json
         $ctr->get('/json', array($this, 'exampleUrlJson'))

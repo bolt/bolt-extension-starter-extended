@@ -98,7 +98,7 @@ class Extension extends BaseExtension
         // register route for all GET requests on '/example/url' that will be handled in this class ($this) in the 'routeExampleUrl' function.
         $this->app
             ->get('/example/url', array($this, 'routeExampleUrl'))
-            ->bind('example-url');
+            ->bind('example-url'); // route name, must be unique(!)
 
         // Mount the ExampleController class to all routes that match '/example/url/*'
         // To see specific bindings between route and controller method see 'connect()' function in the ExampleController class.
