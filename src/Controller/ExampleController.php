@@ -122,7 +122,7 @@ class ExampleController implements ControllerProviderInterface
     }
 
     /**
-     * Handles GET requests on /example/url/get-parameter and return with some data with json.
+     * Handles GET requests on /example/url/get-parameter and return with some data as json.
      * Example: http://localhost/example/url/get-parameter?foo=bar&baz=foo&id=7
      * Works in the same way with POST requests
      *
