@@ -67,6 +67,10 @@ class ExampleController implements ControllerProviderInterface
         $ctr->get('/get-parameter', array($this, 'exampleUrlGetParameter'))
             ->bind('example-url-parameter-get');
 
+        // /example/url/get-parameter
+        $ctr->get('/template', array($this, 'exampleUrlTemplate'))
+            ->bind('example-url-template');
+
         return $ctr;
     }
 
@@ -140,5 +144,16 @@ class ExampleController implements ControllerProviderInterface
         ]);
 
         return $jsonResponse;
+    }
+
+    /**
+     * Handles GET requests on /example/url/template and return a template.
+     *
+     * @param Request $request
+     * @return mixed
+     */
+    public function exampleUrlTemplate(Request $request)
+    {
+        return $this->app['render']->render('example_site.twig', ['title' => 'Look at This Nice Template'], []);
     }
 }
