@@ -67,7 +67,7 @@ class ExampleController implements ControllerProviderInterface
         $ctr->get('/get-parameter', array($this, 'exampleUrlGetParameter'))
             ->bind('example-url-parameter-get');
 
-        // /example/url/get-parameter
+        // /example/url/template
         $ctr->get('/template', array($this, 'exampleUrlTemplate'))
             ->bind('example-url-template');
 
