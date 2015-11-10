@@ -1,4 +1,4 @@
-Bolt Extension Starter
+Extended Bolt Extension Starter
 ======================
 
 An extended starter skeleton for a Bolt Extension
