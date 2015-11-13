@@ -33,6 +33,22 @@ This extension includes examples for the following features:
 	- Handling inside extension class
 	- Handling inside a listener class
 	
+### Routes
+
+This extension adds several example routes to the system to show you how to define them inline in your Extension class or in a separate controller.
+
+`/example/url` returns "Hello, Bolt!" as plain text.
+
+`/example/url/in/controller` returns "Hello, World!" as plain text but will be handled in a controller class.
+
+`/example/url/json` returns a key value pair in JSON.
+
+`/example/url/parameter/{id}` returns the given url parameter as JSON.
+
+`/example/url/get-parameter?foo=bar&baz=foo&id=7` returns the given GET parameter as JSON.
+
+`/example/url/template` returns content from a Twig template.
+
 ----
 
 For more information, see this page in the Bolt documentation: https://docs.bolt.cm/extensions/config 
