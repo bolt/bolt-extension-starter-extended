@@ -150,6 +150,7 @@ class ExampleController implements ControllerProviderInterface
      * Handles GET requests on /example/url/template and return a template.
      *
      * @param Request $request
+     *
      * @return mixed
      */
     public function exampleUrlTemplate(Request $request)
