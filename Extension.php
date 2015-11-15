@@ -120,6 +120,23 @@ class Extension extends BaseExtension
         $this->app['dispatcher']->addListener(StorageEvents::POST_SAVE, array($storageEventListener, 'onPostSave'));
         $this->app['dispatcher']->addListener(StorageEvents::PRE_DELETE, array($storageEventListener, 'onPreDelete'));
         $this->app['dispatcher']->addListener(StorageEvents::POST_DELETE, array($storageEventListener, 'onPostDelete'));
+
+        /*
+         * Extending the backend menu:
+         * You can provide new Backend sites with their own menu option and template.
+         * Here we will add a new route to the system and register the menu option in the backend.
+         * You'll find the new menu option under "Extras".
+         *
+         * Note: The page don't has to be under the backend url. You can add any url to the backend menu.
+         * */
+
+        $backendRoot = $this->app['resources']->getUrl('bolt'); // get root url for the admin panel.
+
+        $this->app
+            ->get($backendRoot . 'my-custom-backend-page', array($this, 'exampleBackendPage'))
+            ->bind('example-backend-page');
+
+        $this->addMenuOption('Custom Page', $backendRoot . 'my-custom-backend-page', 'fa:child');
     }
 
     /**
@@ -187,5 +204,17 @@ class Extension extends BaseExtension
     public function addFiveTo($number)
     {
         return intval($number) + 5;
+    }
+
+    /**
+     * Handles GET requests on /bolt/my-custom-backend-page and return a template
+     *
+     * @param Request $request
+     *
+     * @return mixed
+     */
+    public function exampleBackendPage(Request $request)
+    {
+        return $this->app['twig']->render('custom_backend_site.twig', ['title' => 'My Custom Page']);
     }
 }
