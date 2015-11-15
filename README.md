@@ -32,6 +32,8 @@ This extension includes examples for the following features:
 - Event listeners
 	- Handling inside extension class
 	- Handling inside a listener class
+
+- Own Menu Options
 	
 ### Routes
 
@@ -48,6 +50,13 @@ This extension adds several example routes to the system to show you how to defi
 `/example/url/get-parameter?foo=bar&baz=foo&id=7` returns the given GET parameter as JSON.
 
 `/example/url/template` returns content from a Twig template.
+
+
+### Own Menu Options
+
+This extension adds `/bolt/my-custom-backend-page` as `Custom Page` to the menu in the admin backend. It appears under `Extras`. 
+
+You are not limited to just backend sites or sites served by Bolt. You can add any URL to the menu in the admin backend.
 
 ----
 
