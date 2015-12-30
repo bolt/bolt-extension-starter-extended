@@ -14,27 +14,27 @@ To get going run the following command, replacing the last argument with the nam
 This extension includes examples for the following features:
 
 - Routes
-	- Handling inside extension class
-	- Handling inside a controller class
-	- Twig response
-	- JSON response
-	- URL parameter
-	- GET and POST parameter
+  - Handling inside extension class
+  - Handling inside a controller class
+  - Twig response
+  - JSON response
+  - URL parameter
+  - GET and POST parameter
 
 - Accessing config
-	 - Extension config
-	 - Global config
+   - Extension config
+   - Global config
 
 - Own Twig functions
 
 - Own Fieldtypes
 
 - Event listeners
-	- Handling inside extension class
-	- Handling inside a listener class
+  - Handling inside extension class
+  - Handling inside a listener class
 
 - Own Menu Options
-	
+  
 ### Routes
 
 This extension adds several example routes to the system to show you how to define them inline in your Extension class or in a separate controller.
