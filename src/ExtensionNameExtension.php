@@ -11,7 +11,7 @@ use Bolt\Extension\YourName\ExtensionName\Listener\StorageEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Extension extends BaseExtension
+class ExtensionNameExtension extends BaseExtension
 {
     /**
      * The extension name
