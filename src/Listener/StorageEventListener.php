@@ -2,23 +2,19 @@
 
 namespace Bolt\Extension\YourName\ExtensionName\Listener;
 
-use Bolt\Application;
 use Bolt\Events\StorageEvent;
+use Silex\Application;
 
+/**
+ * Event class to handle storage related events.
+ *
+ * @author Your Name <you@example.com>
+ */
 class StorageEventListener
 {
-    /**
-     * Bolt Application instance
-     *
-     * @var Application
-     */
+    /** @var Application Bolt's Application object */
     private $app;
-
-    /**
-     * Extension configuration
-     *
-     * @var array
-     */
+    /** @var array The extension's configuration parameters */
     private $config;
 
     /**

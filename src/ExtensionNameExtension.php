@@ -2,171 +2,222 @@
 
 namespace Bolt\Extension\YourName\ExtensionName;
 
-use Bolt\Application;
-use Bolt\BaseExtension;
+use Bolt\Asset\File\JavaScript;
+use Bolt\Asset\File\Stylesheet;
+use Bolt\Controller\Zone;
 use Bolt\Events\StorageEvent;
 use Bolt\Events\StorageEvents;
+use Bolt\Extension\SimpleExtension;
 use Bolt\Extension\YourName\ExtensionName\Controller\ExampleController;
 use Bolt\Extension\YourName\ExtensionName\Listener\StorageEventListener;
+use Bolt\Menu\MenuEntry;
+use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class ExtensionNameExtension extends BaseExtension
+/**
+ * ExtensionName extension class.
+ *
+ * @author Your Name <you@example.com>
+ */
+class ExtensionNameExtension extends SimpleExtension
 {
     /**
-     * The extension name
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
+        // The extension's user friendly name
         return 'ExtensionName';
     }
 
-    public function initialize()
+    /**
+     * {@inheritdoc}
+     *
+     * Example override of the register() function.
+     *
+     * NOTE: You *must* call the parent::register($app); or things will break!
+     */
+    public function register(Application $app)
     {
-        $this->app->before(array($this, 'before'));
-
-        //register folder as additional twig source
-        $this->app['twig.loader.filesystem']->addPath(__DIR__ . '/twig');
+        parent::register($app);
 
         /*
-         * Extension config file:
-         * You extension can have its own config file where your users can set some options
-         * through the Bolt backend or any text editor.
-         * Look at the file named config.yml.dist which is your config boilerplate.
-         * You can edit it like you want so it fits your needs.
-         * Bolt will copy it as {extension-name}.{vendor-name}.yml into /app/config/extensions when it doesn’t already exist there.
-         * See also the section in the docs: https://docs.bolt.cm/extensions/essentials#using-your-own-configyml-file
-         * */
-
-        // dump the whole config on top of each page for debugging purpose
-        //dump($this->config);
-
-        // it's just a normal array
-        $foo = $this->config['foo'];
-
-        /*
-         * Global application config:
-         * You can also access the global application config.
-         * There is a useful getter on the configuration object to access the different configuration file.
-         * Struktur: get({file}/{key}/{subkey});
-         * Unclear? Check out the following examples.
-         * */
-
-        $theme = $this->app['config']->get('general/theme', 'default'); // File 'config.yml', Key 'theme'
-
-        $pagesContenttype = $this->app['config']->get('contenttypes/pages', 'default'); // File 'contenttypes.yml', Key 'pages'
-
-        $mainMenuFirstItem = $this->app['config']->get('menu/main/0', 'default'); // File 'menu.yml', Key 'main', SubKey 0
-
-        $roles = $this->app['config']->get('permissions/roles', 'default'); // File 'permissions.yml', Key 'roles'
-
-        /*
-         * Own Twig functions:
-         * You can define methods inside this class as Twig functions.
-         * How to use the following example in your template: {{ add_five_to(7) }}
-         * It will display '12'.
-         * */
-
-        $this->addTwigFunction(
-            'add_five_to', // Twig function name
-            'addFiveTo'  // Method in this class (scroll down buddy)
-        );
-
-        /*
-         * Own Fieldtypes:
-         * You are not limited to the fieldtypes that are served by Bolt.
+         * Custom Field Types:
+         * You are not limited to the field types that are provided by Bolt.
          * It's really easy to create your own.
          *
-         * This example is just a simple textfield to show you
-         * how to store and receive data.
+         * This example is just a simple text field to show you
+         * how to store and retrieve data.
          *
          * See also the documentation page for more information and a more complex example.
          * https://docs.bolt.cm/extensions/customfields
-         * */
+         */
 
-        $this->app['config']->getFields()->addField(new Field\ExampleField());
+        $app['config']->getFields()->addField(new Field\ExampleField());
+    }
 
-        /*
-         * Routes:
-         * Here you can register new routes in your Bolt application.
-         * The first route will be handles in this Extension class,
-         * then we switch to an extra Controller class for the routes.
-         * */
-
-        // register route for all GET requests on '/example/url' that will be handled in this class ($this) in the 'routeExampleUrl' function.
-        $this->app
-            ->get('/example/url', array($this, 'routeExampleUrl'))
-            ->bind('example-url'); // route name, must be unique(!)
-
-        // Mount the ExampleController class to all routes that match '/example/url/*'
-        // To see specific bindings between route and controller method see 'connect()' function in the ExampleController class.
-        $this->app->mount('/example/url', new ExampleController($this->app, $this->config));
+    /**
+     * {@inheritdoc}
+     *
+     * Example override of the register() function.
+     *
+     * NOTE: You *must* call the parent::boot($app); or things will break!
+     */
+    public function boot(Application $app)
+    {
+        parent::boot($app);
 
         /*
          * Event Listener:
-         * Did you know that Bolt fires events based on backend actions?
-         * Now you know! :)
+         *
+         * Did you know that Bolt fires events based on backend actions? Now you know! :)
+         *
          * Let's register listeners for all 4 storage events.
+         *
          * The first listener will be an inline function, the three other ones will be in a separate class.
          * See also the documentation page:
          * https://docs.bolt.cm/extensions/essentials#adding-storage-events
-         * */
+         */
 
-        $this->app['dispatcher']->addListener(StorageEvents::PRE_SAVE, array($this, 'onPreSave'));
+        $app['dispatcher']->addListener(StorageEvents::PRE_SAVE, [$this, 'onPreSave']);
 
-        $storageEventListener = new StorageEventListener($this->app, $this->config);
-        $this->app['dispatcher']->addListener(StorageEvents::POST_SAVE, array($storageEventListener, 'onPostSave'));
-        $this->app['dispatcher']->addListener(StorageEvents::PRE_DELETE, array($storageEventListener, 'onPreDelete'));
-        $this->app['dispatcher']->addListener(StorageEvents::POST_DELETE, array($storageEventListener, 'onPostDelete'));
-
-        /*
-         * Extending the backend menu:
-         * You can provide new Backend sites with their own menu option and template.
-         * Here we will add a new route to the system and register the menu option in the backend.
-         * You'll find the new menu option under "Extras".
-         *
-         * Note: The page don't has to be under the backend url. You can add any url to the backend menu.
-         * */
-
-        $backendRoot = $this->app['resources']->getUrl('bolt'); // get root url for the admin panel.
-
-        $this->app
-            ->get($backendRoot . 'my-custom-backend-page', array($this, 'exampleBackendPage'))
-            ->bind('example-backend-page');
-
-        $this->addMenuOption('Custom Page', $backendRoot . 'my-custom-backend-page', 'fa:child');
+        $storageEventListener = new StorageEventListener($app, $this->getConfig());
+        $app['dispatcher']->addListener(StorageEvents::POST_SAVE, [$storageEventListener, 'onPostSave']);
+        $app['dispatcher']->addListener(StorageEvents::PRE_DELETE, [$storageEventListener, 'onPreDelete']);
+        $app['dispatcher']->addListener(StorageEvents::POST_DELETE, [$storageEventListener, 'onPostDelete']);
     }
 
     /**
-     * Before middleware function
+     * Handles PRE_SAVE storage event
      *
-     * @param Request $request
+     * @param StorageEvent $event
      */
-    public function before(Request $request)
+    public function onPreSave(StorageEvent $event)
     {
-        // execute only when in backend
-        if ($this->app['config']->getWhichEnd() === 'backend') {
-            $this->app['htmlsnippets'] = true;
+        // The ContentType of the record being saved
+        $contenttype = $event->getContentType();
 
-            // add CSS and Javascript files to all requests in the backend
-            $this->addCss('assets/extension.css');
-            $this->addJavascript('assets/start.js', true);
-        }
+        // The record being saved
+        $record = $event->getContent();
 
-        // In Bolt 2.3+ getWhichEnd() has been deprecated and you should use
-        // Zones insted
-//      if (Zone::isBackend($request)) {
-//          $this->addCss('assets/extension.css');
-//          $this->addJavascript('assets/start.js', true);
-//      }
-//      if (Zone::isFrontend($request)) {
-//      }
+        // A flag to tell if the record was created, updated or deleted,
+        // for more information see the page in the documentation
+        $created = $event->isCreate();
+
+        // Do whatever you want with this data
+        // See page in the documentation for a logging example
     }
 
     /**
-     * Handles GET requests on /example/url
+     * {@inheritdoc}
+     */
+    protected function registerAssets()
+    {
+        return [
+            // Web assets that will be loaded in the frontend
+            new Stylesheet('extension.css'),
+            new JavaScript('extension.js'),
+            // Web assets that will be loaded in the backend
+            (new Stylesheet('clippy.js/clippy.css'))->setZone(Zone::BACKEND),
+            (new JavaScript('clippy.js/clippy.min.js'))->setZone(Zone::BACKEND),
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function registerTwigPaths()
+    {
+        return ['templates'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function registerTwigFunctions()
+    {
+        return [
+            'my_twig_function' => 'myTwigFunction',
+        ];
+    }
+
+    /**
+     * The callback function when {{ my_twig_function() }} is used in a template.
+     *
+     * @return string
+     */
+    public function myTwigFunction()
+    {
+        $context = [
+            'something' => mt_rand(),
+        ];
+
+        return $this->renderTemplate('extension.twig', $context);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Extending the backend menu:
+     *
+     * You can provide new Backend sites with their own menu option and template.
+     *
+     * Here we will add a new route to the system and register the menu option in the backend.
+     *
+     * You'll find the new menu option under "Extras".
+     */
+    protected function registerMenuEntries()
+    {
+        /*
+         * Define a menu entry object and register it:
+         *   - Route http://example.com/bolt/my-custom-backend-page-route
+         *   - Menu label 'MyExtension Admin'
+         *   - Menu icon a Font Awesome small child
+         *   - Required Bolt permissions 'settings'
+         */
+        $adminMenuEntry = (new MenuEntry('my-custom-backend-page', 'my-custom-backend-page-route'))
+            ->setLabel('MyExtension Admin')
+            ->setIcon('fa:child')
+            ->setPermission('settings')
+        ;
+
+        return [$adminMenuEntry];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Mount the ExampleController class to all routes that match '/example/url/*'
+     *
+     * To see specific bindings between route and controller method see 'connect()'
+     * function in the ExampleController class.
+     */
+    protected function registerFrontendControllers()
+    {
+        $app = $this->getContainer();
+        $config = $this->getConfig();
+
+        return [
+            '/example/url', new ExampleController($app, $config),
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * This first route will be handled in this extension class,
+     * then we switch to an extra controller class for the routes.
+     */
+    protected function registerFrontendRoutes()
+    {
+        return [
+            '/example/url', [$this, 'routeExampleUrl'],
+        ];
+    }
+
+    /**
+     * Handles GET requests on the /example/url route.
      *
      * @param Request $request
      *
@@ -180,34 +231,25 @@ class ExtensionNameExtension extends BaseExtension
     }
 
     /**
-     * Handles PRE_SAVE storage event
-     *
-     * @param StorageEvent $event
+     * {@inheritdoc}
      */
-    public function onPreSave(StorageEvent $event)
+    protected function registerBackendControllers()
     {
-        $contenttype = $event->getContentType(); // record contenttype
-        $record = $event->getContent(); // record itself
-        $created = $event->isCreate(); // if record was created, updated or deleted, for more information see the page in the documentation
-
-        // Do whatever you want with this data
-        // See page in the documentation for a logging example
+        return [];
     }
 
     /**
-     * Add 5 to the given number
-     *
-     * @param $number
-     *
-     * @return int
+     * {@inheritdoc}
      */
-    public function addFiveTo($number)
+    protected function registerBackendRoutes()
     {
-        return intval($number) + 5;
+        return [
+            '/my-custom-backend-page', [$this, 'exampleBackendPage'],
+        ];
     }
 
     /**
-     * Handles GET requests on /bolt/my-custom-backend-page and return a template
+     * Handles GET requests on /bolt/my-custom-backend-page and return a template.
      *
      * @param Request $request
      *
@@ -215,6 +257,6 @@ class ExtensionNameExtension extends BaseExtension
      */
     public function exampleBackendPage(Request $request)
     {
-        return $this->app['twig']->render('custom_backend_site.twig', ['title' => 'My Custom Page']);
+        return $this->renderTemplate('custom_backend_site.twig', ['title' => 'My Custom Page']);
     }
 }
