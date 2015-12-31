@@ -12,6 +12,7 @@ use Bolt\Extension\YourName\ExtensionName\Controller\ExampleController;
 use Bolt\Extension\YourName\ExtensionName\Listener\StorageEventListener;
 use Bolt\Menu\MenuEntry;
 use Silex\Application;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -59,15 +60,9 @@ class ExtensionNameExtension extends SimpleExtension
 
     /**
      * {@inheritdoc}
-     *
-     * Example override of the register() function.
-     *
-     * NOTE: You *must* call the parent::boot($app); or things will break!
      */
-    public function boot(Application $app)
+    public function subscribe(EventDispatcherInterface $dispatcher)
     {
-        parent::boot($app);
-
         /*
          * Event Listener:
          *
@@ -80,12 +75,12 @@ class ExtensionNameExtension extends SimpleExtension
          * https://docs.bolt.cm/extensions/essentials#adding-storage-events
          */
 
-        $app['dispatcher']->addListener(StorageEvents::PRE_SAVE, [$this, 'onPreSave']);
+        $dispatcher->addListener(StorageEvents::PRE_SAVE, [$this, 'onPreSave']);
 
-        $storageEventListener = new StorageEventListener($app, $this->getConfig());
-        $app['dispatcher']->addListener(StorageEvents::POST_SAVE, [$storageEventListener, 'onPostSave']);
-        $app['dispatcher']->addListener(StorageEvents::PRE_DELETE, [$storageEventListener, 'onPreDelete']);
-        $app['dispatcher']->addListener(StorageEvents::POST_DELETE, [$storageEventListener, 'onPostDelete']);
+        $storageEventListener = new StorageEventListener($this->getContainer(), $this->getConfig());
+        $dispatcher->addListener(StorageEvents::POST_SAVE, [$storageEventListener, 'onPostSave']);
+        $dispatcher->addListener(StorageEvents::PRE_DELETE, [$storageEventListener, 'onPreDelete']);
+        $dispatcher->addListener(StorageEvents::POST_DELETE, [$storageEventListener, 'onPostDelete']);
     }
 
     /**

@@ -4,13 +4,14 @@ namespace Bolt\Extension\YourName\ExtensionName\Listener;
 
 use Bolt\Events\StorageEvent;
 use Silex\Application;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Event class to handle storage related events.
  *
  * @author Your Name <you@example.com>
  */
-class StorageEventListener
+class StorageEventListener implements EventSubscriberInterface
 {
     /** @var Application Bolt's Application object */
     private $app;
@@ -64,5 +65,13 @@ class StorageEventListener
         $id = $event->getId();
         // $contenttype = $event->getContentType();
         $record = $event->getContent();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [];
     }
 }
