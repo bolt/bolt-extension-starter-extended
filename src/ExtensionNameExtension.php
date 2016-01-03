@@ -61,7 +61,7 @@ class ExtensionNameExtension extends SimpleExtension
     /**
      * {@inheritdoc}
      */
-    public function subscribe(EventDispatcherInterface $dispatcher)
+    protected function subscribe(EventDispatcherInterface $dispatcher)
     {
         /*
          * Event Listener:
