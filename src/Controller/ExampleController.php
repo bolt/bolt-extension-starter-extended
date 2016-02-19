@@ -2,7 +2,7 @@
 
 namespace Bolt\Extension\YourName\ExtensionName\Controller;
 
-use Bolt\Application;
+use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,14 +26,12 @@ class ExampleController implements ControllerProviderInterface
     private $config;
 
     /**
-     * Initiate the controller with Bolt Application instance and extension config.
+     * Constructor.
      *
-     * @param Application $app
-     * @param $config
+     * @param array $config
      */
-    public function __construct(Application $app, array $config)
+    public function __construct(array $config)
     {
-        $this->app = $app;
         $this->config = $config;
     }
 
@@ -42,11 +40,11 @@ class ExampleController implements ControllerProviderInterface
      *
      * Base route/path is '/example/url' (see Extension.php)
      *
-     * @param \Silex\Application $app An Application instance
+     * @param Application $app An Application instance
      *
      * @return ControllerCollection A ControllerCollection instance
      */
-    public function connect(\Silex\Application $app)
+    public function connect(Application $app)
     {
         /** @var $ctr \Silex\ControllerCollection */
         $ctr = $app['controllers_factory'];
@@ -99,9 +97,9 @@ class ExampleController implements ControllerProviderInterface
     {
         $jsonResponse = new JsonResponse();
 
-        $jsonResponse->setData([
-            'message' => 'I am a JSON response, yeah!'
-        ]);
+        $jsonResponse->setData(array(
+            'message' => 'I am a JSON response, yeah!',
+        ));
 
         return $jsonResponse;
     }
@@ -110,7 +108,7 @@ class ExampleController implements ControllerProviderInterface
      * Handles GET requests on /example/url/parameter/{id} and return with json.
      *
      * @param Request $request
-     * @param $id
+     * @param string  $id
      *
      * @return JsonResponse
      */
@@ -118,9 +116,9 @@ class ExampleController implements ControllerProviderInterface
     {
         $jsonResponse = new JsonResponse();
 
-        $jsonResponse->setData([
-            'id' => $id
-        ]);
+        $jsonResponse->setData(array(
+            'id' => $id,
+        ));
 
         return $jsonResponse;
     }
@@ -138,10 +136,10 @@ class ExampleController implements ControllerProviderInterface
     {
         $jsonResponse = new JsonResponse();
 
-        $jsonResponse->setData([
+        $jsonResponse->setData(array(
             'all' => $request->query->all(), // all GET parameter as key value array
-            'id' => $request->get('id') // only 'id' GET parameter
-        ]);
+            'id'  => $request->get('id'), // only 'id' GET parameter
+        ));
 
         return $jsonResponse;
     }
@@ -151,10 +149,10 @@ class ExampleController implements ControllerProviderInterface
      *
      * @param Request $request
      *
-     * @return mixed
+     * @return string
      */
-    public function exampleUrlTemplate(Request $request)
+    public function exampleUrlTemplate(Application $app, Request $request)
     {
-        return $this->app['render']->render('example_site.twig', ['title' => 'Look at This Nice Template'], []);
+        return $app['render']->render('example_site.twig', array('title' => 'Look at This Nice Template'), array());
     }
 }

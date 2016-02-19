@@ -102,7 +102,7 @@ class Extension extends BaseExtension
 
         // Mount the ExampleController class to all routes that match '/example/url/*'
         // To see specific bindings between route and controller method see 'connect()' function in the ExampleController class.
-        $this->app->mount('/example/url', new ExampleController($this->app, $this->config));
+        $this->app->mount('/example/url', new ExampleController($this->config));
 
         /*
          * Event Listener:
@@ -215,6 +215,6 @@ class Extension extends BaseExtension
      */
     public function exampleBackendPage(Request $request)
     {
-        return $this->app['twig']->render('custom_backend_site.twig', ['title' => 'My Custom Page']);
+        return $this->app['twig']->render('custom_backend_site.twig', array('title' => 'My Custom Page'));
     }
 }
