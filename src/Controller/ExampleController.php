@@ -16,20 +16,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ExampleController implements ControllerProviderInterface
 {
-    /** @var Application Bolt's Application object */
-    private $app;
     /** @var array The extension's configuration parameters */
     private $config;
 
     /**
      * Initiate the controller with Bolt Application instance and extension config.
      *
-     * @param Application $app
-     * @param $config
+     * @param array $config
      */
-    public function __construct(Application $app, array $config)
+    public function __construct(array $config)
     {
-        $this->app = $app;
         $this->config = $config;
     }
 
@@ -38,11 +34,11 @@ class ExampleController implements ControllerProviderInterface
      *
      * Base route/path is '/example/url'
      *
-     * @param \Silex\Application $app An Application instance
+     * @param Application $app An Application instance
      *
      * @return ControllerCollection A ControllerCollection instance
      */
-    public function connect(\Silex\Application $app)
+    public function connect(Application $app)
     {
         /** @var $ctr \Silex\ControllerCollection */
         $ctr = $app['controllers_factory'];
@@ -147,10 +143,10 @@ class ExampleController implements ControllerProviderInterface
      *
      * @param Request $request
      *
-     * @return mixed
+     * @return string
      */
-    public function exampleUrlTemplate(Request $request)
+    public function exampleUrlTemplate(Application $app, Request $request)
     {
-        return $this->app['twig']->render('example_site.twig', ['title' => 'Look at This Nice Template'], []);
+        return $app['twig']->render('example_site.twig', ['title' => 'Look at This Nice Template'], []);
     }
 }

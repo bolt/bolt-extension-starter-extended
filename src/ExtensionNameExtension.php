@@ -11,7 +11,6 @@ use Bolt\Extension\SimpleExtension;
 use Bolt\Extension\YourName\ExtensionName\Controller\ExampleController;
 use Bolt\Extension\YourName\ExtensionName\Listener\StorageEventListener;
 use Bolt\Menu\MenuEntry;
-use Silex\Application;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,23 +25,8 @@ class ExtensionNameExtension extends SimpleExtension
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function registerFields()
     {
-        // The extension's user friendly name
-        return 'ExtensionName';
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Example override of the register() function.
-     *
-     * NOTE: You *must* call the parent::register($app); or things will break!
-     */
-    public function register(Application $app)
-    {
-        parent::register($app);
-
         /*
          * Custom Field Types:
          * You are not limited to the field types that are provided by Bolt.
@@ -55,7 +39,9 @@ class ExtensionNameExtension extends SimpleExtension
          * https://docs.bolt.cm/extensions/customfields
          */
 
-        $app['config']->getFields()->addField(new Field\ExampleField());
+        return [
+            new Field\ExampleField(),
+        ];
     }
 
     /**
@@ -194,7 +180,7 @@ class ExtensionNameExtension extends SimpleExtension
         $config = $this->getConfig();
 
         return [
-            '/example/url', new ExampleController($app, $config),
+            '/example/url', new ExampleController($config),
         ];
     }
 
@@ -248,7 +234,7 @@ class ExtensionNameExtension extends SimpleExtension
      *
      * @param Request $request
      *
-     * @return mixed
+     * @return string
      */
     public function exampleBackendPage(Request $request)
     {
