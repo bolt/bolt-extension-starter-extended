@@ -4,6 +4,11 @@ namespace Bolt\Extension\YourName\ExtensionName\Field;
 
 use Bolt\Field\FieldInterface;
 
+/**
+ * Custom field type class for use in ContentTypes.
+ *
+ * @author Your Name <you@example.com>
+ */
 class ExampleField implements FieldInterface
 {
     /**
@@ -18,7 +23,8 @@ class ExampleField implements FieldInterface
 
     /**
      * Returns the path to the template.
-     * (You can put them into assets/twig because we registered the folder as twig source in Extension.php)
+     *
+     * (You can put them into templates/twig because we registered the folder as Twig source)
      *
      * @return string The template name
      */
@@ -44,6 +50,6 @@ class ExampleField implements FieldInterface
      */
     public function getStorageOptions()
     {
-        return array('default' => '');
+        return ['default' => ''];
     }
 }

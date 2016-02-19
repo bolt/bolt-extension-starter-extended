@@ -2,27 +2,23 @@
 
 namespace Bolt\Extension\YourName\ExtensionName\Controller;
 
-use Bolt\Application;
+use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Controller class.
+ *
+ * @author Your Name <you@example.com>
+ */
 class ExampleController implements ControllerProviderInterface
 {
-    /**
-     * Bolt Application instance
-     *
-     * @var Application
-     */
+    /** @var Application Bolt's Application object */
     private $app;
-
-    /**
-     * Extension configuration
-     *
-     * @var array
-     */
+    /** @var array The extension's configuration parameters */
     private $config;
 
     /**
@@ -40,7 +36,7 @@ class ExampleController implements ControllerProviderInterface
     /**
      * Specify which method handles which route.
      *
-     * Base route/path is '/example/url' (see Extension.php)
+     * Base route/path is '/example/url'
      *
      * @param \Silex\Application $app An Application instance
      *
@@ -52,23 +48,23 @@ class ExampleController implements ControllerProviderInterface
         $ctr = $app['controllers_factory'];
 
         // /example/url/in/controller
-        $ctr->get('/in/controller', array($this, 'exampleUrl'))
+        $ctr->get('/in/controller', [$this, 'exampleUrl'])
             ->bind('example-url-controller'); // route name, must be unique(!)
 
         // /example/url/json
-        $ctr->get('/json', array($this, 'exampleUrlJson'))
+        $ctr->get('/json', [$this, 'exampleUrlJson'])
             ->bind('example-url-json');
 
         // /example/url/parameter/{id}
-        $ctr->get('/parameter/{id}', array($this, 'exampleUrlWithParameter'))
+        $ctr->get('/parameter/{id}', [$this, 'exampleUrlWithParameter'])
             ->bind('example-url-parameter');
 
         // /example/url/get-parameter
-        $ctr->get('/get-parameter', array($this, 'exampleUrlGetParameter'))
+        $ctr->get('/get-parameter', [$this, 'exampleUrlGetParameter'])
             ->bind('example-url-parameter-get');
 
         // /example/url/template
-        $ctr->get('/template', array($this, 'exampleUrlTemplate'))
+        $ctr->get('/template', [$this, 'exampleUrlTemplate'])
             ->bind('example-url-template');
 
         return $ctr;
@@ -100,7 +96,7 @@ class ExampleController implements ControllerProviderInterface
         $jsonResponse = new JsonResponse();
 
         $jsonResponse->setData([
-            'message' => 'I am a JSON response, yeah!'
+            'message' => 'I am a JSON response, yeah!',
         ]);
 
         return $jsonResponse;
@@ -119,7 +115,7 @@ class ExampleController implements ControllerProviderInterface
         $jsonResponse = new JsonResponse();
 
         $jsonResponse->setData([
-            'id' => $id
+            'id' => $id,
         ]);
 
         return $jsonResponse;
@@ -140,7 +136,7 @@ class ExampleController implements ControllerProviderInterface
 
         $jsonResponse->setData([
             'all' => $request->query->all(), // all GET parameter as key value array
-            'id' => $request->get('id') // only 'id' GET parameter
+            'id'  => $request->get('id'), // only 'id' GET parameter
         ]);
 
         return $jsonResponse;
@@ -155,6 +151,6 @@ class ExampleController implements ControllerProviderInterface
      */
     public function exampleUrlTemplate(Request $request)
     {
-        return $this->app['render']->render('example_site.twig', ['title' => 'Look at This Nice Template'], []);
+        return $this->app['twig']->render('example_site.twig', ['title' => 'Look at This Nice Template'], []);
     }
 }
