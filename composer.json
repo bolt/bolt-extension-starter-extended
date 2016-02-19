@@ -2,7 +2,10 @@
     "name": "bolt/bolt-extension-starter-extended",
     "description": "A description about your extension should go here.",
     "type": "bolt-extension",
-    "keywords" : [ "foo", "bar" ],
+    "keywords": [
+        "foo",
+        "bar"
+    ],
     "require": {
         "bolt/bolt": ">=2.0.0,<3.0.0"
     },
@@ -12,12 +15,12 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Your Name", 
+            "name": "Your Name",
             "email": "you@example.com"
         }
     ],
-	"minimum-stability" : "dev",
-	"prefer-stable" : true,
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "files": [
             "init.php"
@@ -29,10 +32,10 @@
             ]
         }
     },
-    "autoload-dev" : {
-        "psr-4" : {
+    "autoload-dev": {
+        "psr-4": {
             "Bolt\\Extension\\YourName\\ExtensionName\\Tests\\": "tests",
-            "Bolt\\Tests\\" : "vendor/bolt/bolt/tests/phpunit/unit/"
+            "Bolt\\Tests\\": "vendor/bolt/bolt/tests/phpunit/unit/"
         }
     },
     "extra": {
