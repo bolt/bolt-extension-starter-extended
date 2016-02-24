@@ -35,9 +35,9 @@
     "extra": {
         "bolt-assets": "web",
         "bolt-class": "Bolt\\Extension\\YourName\\ExtensionName\\ExtensionNameExtension",
-        "bolt-icon": "assets/bolt-icon.png",
+        "bolt-icon": "bolt-icon.png",
         "bolt-screenshots": [
-            "assets/screenshots/screenshot1.png"
+            "screenshots/screenshot1.png"
         ]
     }
 }
