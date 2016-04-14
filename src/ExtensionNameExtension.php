@@ -180,7 +180,7 @@ class ExtensionNameExtension extends SimpleExtension
         $config = $this->getConfig();
 
         return [
-            '/example/url', new ExampleController($config),
+            '/example/url' => new ExampleController($config),
         ];
     }
 
