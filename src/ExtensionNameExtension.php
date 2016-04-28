@@ -11,6 +11,7 @@ use Bolt\Extension\SimpleExtension;
 use Bolt\Extension\YourName\ExtensionName\Controller\ExampleController;
 use Bolt\Extension\YourName\ExtensionName\Listener\StorageEventListener;
 use Bolt\Menu\MenuEntry;
+use Silex\ControllerCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -190,7 +191,7 @@ class ExtensionNameExtension extends SimpleExtension
      * This first route will be handled in this extension class,
      * then we switch to an extra controller class for the routes.
      */
-    protected function registerFrontendRoutes()
+    protected function registerFrontendRoutes(ControllerCollection $collection)
     {
         return [
             '/example/url', [$this, 'routeExampleUrl'],
@@ -222,7 +223,7 @@ class ExtensionNameExtension extends SimpleExtension
     /**
      * {@inheritdoc}
      */
-    protected function registerBackendRoutes()
+    protected function registerBackendRoutes(ControllerCollection $collection)
     {
         return [
             '/my-custom-backend-page', [$this, 'exampleBackendPage'],
