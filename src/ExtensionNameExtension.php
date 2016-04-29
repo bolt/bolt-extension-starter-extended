@@ -193,9 +193,7 @@ class ExtensionNameExtension extends SimpleExtension
      */
     protected function registerFrontendRoutes(ControllerCollection $collection)
     {
-        return [
-            '/example/url', [$this, 'routeExampleUrl'],
-        ];
+        $collection->match('/example/url', [$this, 'routeExampleUrl']);
     }
 
     /**
@@ -225,9 +223,7 @@ class ExtensionNameExtension extends SimpleExtension
      */
     protected function registerBackendRoutes(ControllerCollection $collection)
     {
-        return [
-            '/my-custom-backend-page', [$this, 'exampleBackendPage'],
-        ];
+        $collection->match('/my-custom-backend-page', [$this, 'exampleBackendPage']);
     }
 
     /**
