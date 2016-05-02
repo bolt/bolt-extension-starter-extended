@@ -153,7 +153,7 @@ class ExtensionNameExtension extends SimpleExtension
     {
         /*
          * Define a menu entry object and register it:
-         *   - Route http://example.com/bolt/my-custom-backend-page-route
+         *   - Route http://example.com/bolt/extend/my-custom-backend-page-route
          *   - Menu label 'MyExtension Admin'
          *   - Menu icon a Font Awesome small child
          *   - Required Bolt permissions 'settings'
@@ -223,7 +223,7 @@ class ExtensionNameExtension extends SimpleExtension
      */
     protected function registerBackendRoutes(ControllerCollection $collection)
     {
-        $collection->match('/my-custom-backend-page', [$this, 'exampleBackendPage']);
+        $collection->match('/extend/my-custom-backend-page-route', [$this, 'exampleBackendPage']);
     }
 
     /**
