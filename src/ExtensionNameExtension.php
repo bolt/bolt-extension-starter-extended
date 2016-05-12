@@ -135,7 +135,9 @@ class ExtensionNameExtension extends SimpleExtension
             'something' => mt_rand(),
         ];
 
-        return $this->renderTemplate('extension.twig', $context);
+        $html = $this->renderTemplate('extension.twig', $context);
+
+        return new \Twig_Markup($html, 'UTF-8');
     }
 
     /**
@@ -235,6 +237,8 @@ class ExtensionNameExtension extends SimpleExtension
      */
     public function exampleBackendPage(Request $request)
     {
-        return $this->renderTemplate('custom_backend_site.twig', ['title' => 'My Custom Page']);
+        $html = $this->renderTemplate('custom_backend_site.twig', ['title' => 'My Custom Page']);
+
+        return new \Twig_Markup($html, 'UTF-8');
     }
 }
