@@ -2,7 +2,7 @@
 
 namespace Bolt\Extension\YourName\ExtensionName\Field;
 
-use Bolt\Field\FieldInterface;
+use Bolt\Storage\Field\FieldInterface;
 
 /**
  * Custom field type class for use in ContentTypes.
