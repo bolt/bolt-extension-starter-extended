@@ -101,8 +101,9 @@ class ExtensionNameExtension extends SimpleExtension
             new Stylesheet('extension.css'),
             new JavaScript('extension.js'),
             // Web assets that will be loaded in the backend
-            (new Stylesheet('clippy.js/clippy.css'))->setZone(Zone::BACKEND),
-            (new JavaScript('clippy.js/clippy.min.js'))->setZone(Zone::BACKEND),
+            // Note that ::create() requires Bolt 3.3+
+            Stylesheet::create('clippy.js/clippy.css')->setZone(Zone::BACKEND),
+            JavaScript::create('clippy.js/clippy.min.js')->setZone(Zone::BACKEND),
         ];
     }
 
