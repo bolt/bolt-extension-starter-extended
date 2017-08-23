@@ -2,9 +2,9 @@
 
 namespace Bolt\Extension\YourName\ExtensionName\Controller;
 
+use Bolt\Controller\Base;
 use Silex\Application;
 use Silex\ControllerCollection;
-use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,35 +14,17 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Your Name <you@example.com>
  */
-class ExampleController implements ControllerProviderInterface
+class ExampleController extends Base
 {
-    /** @var array The extension's configuration parameters */
-    private $config;
-
-    /**
-     * Initiate the controller with Bolt Application instance and extension config.
-     *
-     * @param array $config
-     */
-    public function __construct(array $config)
-    {
-        $this->config = $config;
-    }
-
     /**
      * Specify which method handles which route.
      *
      * Base route/path is '/example/url'
      *
-     * @param Application $app An Application instance
-     *
-     * @return ControllerCollection A ControllerCollection instance
+     * {@inheritdoc}
      */
-    public function connect(Application $app)
+    public function addRoutes(ControllerCollection $ctr)
     {
-        /** @var $ctr \Silex\ControllerCollection */
-        $ctr = $app['controllers_factory'];
-
         // /example/url/in/controller
         $ctr->get('/in/controller', [$this, 'exampleUrl'])
             ->bind('example-url-controller'); // route name, must be unique(!)
@@ -147,6 +129,6 @@ class ExampleController implements ControllerProviderInterface
      */
     public function exampleUrlTemplate(Application $app, Request $request)
     {
-        return $app['twig']->render('example_site.twig', ['title' => 'Look at This Nice Template'], []);
+        return $this->render('example_site.twig', ['title' => 'Look at This Nice Template'], []);
     }
 }
