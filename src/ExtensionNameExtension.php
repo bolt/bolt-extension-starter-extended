@@ -11,10 +11,12 @@ use Bolt\Extension\SimpleExtension;
 use Bolt\Extension\YourName\ExtensionName\Controller\ExampleController;
 use Bolt\Extension\YourName\ExtensionName\Listener\StorageEventListener;
 use Bolt\Menu\MenuEntry;
+use Silex\Application;
 use Silex\ControllerCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Markup;
 
 /**
  * ExtensionName extension class.
@@ -110,14 +112,6 @@ class ExtensionNameExtension extends SimpleExtension
     /**
      * {@inheritdoc}
      */
-    protected function registerTwigPaths()
-    {
-        return ['templates'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function registerTwigFunctions()
     {
         return [
@@ -138,7 +132,7 @@ class ExtensionNameExtension extends SimpleExtension
 
         $html = $this->renderTemplate('extension.twig', $context);
 
-        return new \Twig_Markup($html, 'UTF-8');
+        return new Markup($html, 'UTF-8');
     }
 
     /**
@@ -156,7 +150,7 @@ class ExtensionNameExtension extends SimpleExtension
     {
         /*
          * Define a menu entry object and register it:
-         *   - Route http://example.com/bolt/extend/my-custom-backend-page-route
+         *   - Route http://example.com/bolt/extensions/my-custom-backend-page-route
          *   - Menu label 'MyExtension Admin'
          *   - Menu icon a Font Awesome small child
          *   - Required Bolt permissions 'settings'
@@ -171,6 +165,18 @@ class ExtensionNameExtension extends SimpleExtension
     }
 
     /**
+     * We can share our configuration as a service so our other classes can use it.
+     *
+     * {@inheritdoc}
+     */
+    protected function registerServices(Application $app)
+    {
+        $app['myextension.config'] = $app->share(function ($app) {
+            return $this->getConfig();
+        });
+    }
+
+    /**
      * {@inheritdoc}
      *
      * Mount the ExampleController class to all routes that match '/example/url/*'
@@ -180,11 +186,8 @@ class ExtensionNameExtension extends SimpleExtension
      */
     protected function registerFrontendControllers()
     {
-        $app = $this->getContainer();
-        $config = $this->getConfig();
-
         return [
-            '/example/url' => new ExampleController($config),
+            '/example/url' => new ExampleController(),
         ];
     }
 
@@ -216,14 +219,6 @@ class ExtensionNameExtension extends SimpleExtension
     /**
      * {@inheritdoc}
      */
-    protected function registerBackendControllers()
-    {
-        return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function registerBackendRoutes(ControllerCollection $collection)
     {
         $collection->match('/extend/my-custom-backend-page-route', [$this, 'exampleBackendPage']);
@@ -240,6 +235,6 @@ class ExtensionNameExtension extends SimpleExtension
     {
         $html = $this->renderTemplate('custom_backend_site.twig', ['title' => 'My Custom Page']);
 
-        return new \Twig_Markup($html, 'UTF-8');
+        return new Markup($html, 'UTF-8');
     }
 }
